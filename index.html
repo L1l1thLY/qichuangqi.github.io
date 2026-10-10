@@ -1,516 +1,52 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" class="no-js">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>起床气家族 · 冒险岛家族官网</title>
 <meta name="description" content="起床气家族 —— 冒险岛（枫之谷）家族，扫码加入微信群，一起肝图、开荒、摸鱼、整活。" />
+<meta name="keywords" content="起床气家族,冒险岛,枫之谷,MapleStory,家族,微信群,招募" />
+<meta name="author" content="起床气家族" />
+<meta name="theme-color" content="#07071a" />
+
+<!-- 自定义域名 canonical，避免 GitHub 原始域名被搜索引擎重复收录 -->
+<link rel="canonical" href="https://qichuangqi.icu/" />
+
+<!-- 站点图标 -->
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
+
+<!-- Open Graph / 社交分享预览 -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="起床气家族" />
+<meta property="og:locale" content="zh_CN" />
+<meta property="og:url" content="https://qichuangqi.icu/" />
+<meta property="og:title" content="起床气家族 · 冒险岛家族官网" />
+<meta property="og:description" content="一群不想起床、却天天在冒险岛熬夜的狠人。扫码进群，一起肝图、开荒、摸鱼、整活。" />
+<meta property="og:image" content="https://qichuangqi.icu/assets/img/og-cover.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="起床气家族 · 冒险岛枫之谷家族" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="起床气家族 · 冒险岛家族官网" />
+<meta name="twitter:description" content="扫码进群，找一帮陪你熬夜的人。冒险岛很大，一起走才好玩。" />
+<meta name="twitter:image" content="https://qichuangqi.icu/assets/img/og-cover.png" />
+
+<!-- ==========================================================================
+     网络字体：Press Start 2P（像素标题）+ ZCOOL KuaiLe（中文）
+     display=swap 保证字体加载失败/超时时立刻用本地字体渲染，不会白屏。
+     若需切换为国内可直连的源，把下面两个 host 同时替换即可，例如自建镜像
+     或把字体下载到 assets/fonts/ 后改用本地 @font-face（见 README）。
+     ========================================================================== -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --bg-deep: #07071a;
-    --bg-mid: #101033;
-    --ink: #f2f0ff;
-    --ink-dim: #a9a6cc;
-    --maple-red: #ff3b52;
-    --maple-orange: #ff9a2b;
-    --gold: #ffd447;
-    --cyan: #4dd6ff;
-    --pixel: 'Press Start 2P', 'ZCOOL KuaiLe', 'Microsoft YaHei', monospace;
-    --cn-pixel: 'ZCOOL KuaiLe', 'Microsoft YaHei', sans-serif;
-  }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+<link rel="stylesheet" href="assets/css/style.css" />
 
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: var(--bg-deep);
-    color: var(--ink);
-    font-family: var(--cn-pixel);
-    overflow-x: hidden;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* ============ 背景层 ============ */
-  #sky {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    display: block;
-  }
-
-  .bg-glow {
-    position: fixed;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    background:
-      radial-gradient(60% 45% at 50% 8%, rgba(255, 59, 82, .18), transparent 70%),
-      radial-gradient(45% 40% at 12% 78%, rgba(77, 214, 255, .14), transparent 70%),
-      radial-gradient(45% 40% at 88% 72%, rgba(255, 212, 71, .12), transparent 70%);
-  }
-
-  .scanlines {
-    position: fixed;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    opacity: .25;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(255, 255, 255, .04) 0 1px,
-      transparent 1px 3px
-    );
-    mix-blend-mode: overlay;
-  }
-
-  .page { position: relative; z-index: 3; }
-
-  /* ============ 通用 ============ */
-  .wrap { width: min(1120px, 92vw); margin: 0 auto; }
-
-  section { padding: 96px 0; position: relative; }
-
-  .reveal {
-    opacity: 0;
-    transform: translateY(38px);
-    transition: opacity .8s cubic-bezier(.2, .7, .3, 1), transform .8s cubic-bezier(.2, .7, .3, 1);
-  }
-  .reveal.in { opacity: 1; transform: none; }
-
-  .eyebrow {
-    font-family: var(--pixel);
-    font-size: 11px;
-    letter-spacing: 2px;
-    color: var(--cyan);
-    text-shadow: 0 0 14px rgba(77, 214, 255, .6);
-    margin-bottom: 18px;
-  }
-
-  .sec-title {
-    font-family: var(--pixel);
-    font-size: clamp(18px, 3.4vw, 30px);
-    line-height: 1.6;
-    margin-bottom: 14px;
-    background: linear-gradient(180deg, #fff 0%, var(--gold) 55%, var(--maple-orange) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    filter: drop-shadow(0 4px 0 rgba(0, 0, 0, .55));
-  }
-
-  .sec-desc {
-    color: var(--ink-dim);
-    font-size: clamp(14px, 1.6vw, 17px);
-    line-height: 2;
-    max-width: 640px;
-  }
-
-  /* ============ 顶部导航 ============ */
-  header.nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 40;
-    backdrop-filter: blur(10px);
-    background: linear-gradient(180deg, rgba(7, 7, 26, .9), rgba(7, 7, 26, 0));
-    border-bottom: 1px solid transparent;
-    transition: background .3s, border-color .3s;
-  }
-  header.nav.scrolled {
-    background: rgba(7, 7, 26, .92);
-    border-bottom-color: rgba(255, 212, 71, .28);
-  }
-  .nav-inner {
-    width: min(1120px, 92vw);
-    margin: 0 auto;
-    height: 66px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-  }
-  .brand {
-    display: flex; align-items: center; gap: 10px;
-    font-family: var(--pixel);
-    font-size: 13px;
-    color: var(--gold);
-    text-shadow: 0 0 12px rgba(255, 212, 71, .45);
-    white-space: nowrap;
-  }
-  .brand .leaf { font-size: 18px; animation: spin 6s linear infinite; display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  .nav-links { display: flex; gap: 26px; list-style: none; }
-  .nav-links a {
-    color: var(--ink-dim);
-    text-decoration: none;
-    font-size: 14px;
-    letter-spacing: 1px;
-    transition: color .25s, text-shadow .25s;
-  }
-  .nav-links a:hover { color: var(--gold); text-shadow: 0 0 12px rgba(255, 212, 71, .7); }
-
-  .nav-cta {
-    font-family: var(--pixel);
-    font-size: 10px;
-    padding: 10px 16px;
-    color: #21140a;
-    background: linear-gradient(180deg, var(--gold), var(--maple-orange));
-    border: 0;
-    cursor: pointer;
-    box-shadow: 0 4px 0 #a85a10, 0 8px 24px rgba(255, 154, 43, .35);
-    transition: transform .12s, box-shadow .12s;
-    white-space: nowrap;
-  }
-  .nav-cta:active { transform: translateY(3px); box-shadow: 0 1px 0 #a85a10; }
-
-  /* ============ HERO ============ */
-  .hero {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    text-align: center;
-    padding-top: 90px;
-  }
-
-  .hero-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: var(--pixel);
-    font-size: 10px;
-    color: var(--cyan);
-    padding: 9px 16px;
-    border: 2px solid rgba(77, 214, 255, .45);
-    background: rgba(77, 214, 255, .07);
-    box-shadow: 0 0 24px rgba(77, 214, 255, .18) inset;
-    margin-bottom: 30px;
-  }
-  .dot {
-    width: 8px; height: 8px;
-    background: #52ff9f;
-    box-shadow: 0 0 10px #52ff9f;
-    animation: blink 1.4s steps(2) infinite;
-  }
-  @keyframes blink { 50% { opacity: .15; } }
-
-  .hero-title {
-    font-family: var(--pixel);
-    font-size: clamp(34px, 8.4vw, 92px);
-    line-height: 1.35;
-    letter-spacing: 4px;
-    position: relative;
-    color: #fff;
-    text-shadow:
-      3px 3px 0 #b3122b,
-      6px 6px 0 #6d0a1c,
-      0 0 42px rgba(255, 59, 82, .55);
-    animation: float 4.5s ease-in-out infinite;
-  }
-  @keyframes float { 50% { transform: translateY(-12px); } }
-
-  .hero-title .g {
-    background: linear-gradient(180deg, #fff, var(--gold) 60%, var(--maple-orange));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    text-shadow: none;
-    filter: drop-shadow(3px 3px 0 #b3122b) drop-shadow(0 0 30px rgba(255, 212, 71, .5));
-  }
-
-  .hero-en {
-    font-family: var(--pixel);
-    font-size: clamp(8px, 1.5vw, 13px);
-    color: var(--ink-dim);
-    letter-spacing: 6px;
-    margin: 26px 0 22px;
-  }
-
-  .hero-slogan {
-    font-size: clamp(15px, 2.2vw, 22px);
-    color: var(--ink);
-    line-height: 2.1;
-    max-width: 720px;
-    margin: 0 auto;
-  }
-  .hero-slogan b { color: var(--gold); }
-
-  .hero-btns {
-    margin-top: 44px;
-    display: flex;
-    gap: 18px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-  .btn {
-    font-family: var(--pixel);
-    font-size: 11px;
-    padding: 17px 30px;
-    border: 0;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    transition: transform .12s, box-shadow .12s, filter .2s;
-  }
-  .btn:active { transform: translateY(4px); }
-  .btn-primary {
-    color: #2a0d10;
-    background: linear-gradient(180deg, #ff6a7a, var(--maple-red));
-    box-shadow: 0 6px 0 #8f0d20, 0 14px 34px rgba(255, 59, 82, .4);
-  }
-  .btn-primary:hover { filter: brightness(1.12); }
-  .btn-ghost {
-    color: var(--ink);
-    background: rgba(255, 255, 255, .05);
-    border: 2px solid rgba(255, 255, 255, .22);
-    box-shadow: 0 6px 0 rgba(255, 255, 255, .08);
-  }
-  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
-
-  .scroll-hint {
-    position: absolute;
-    bottom: 34px; left: 50%;
-    transform: translateX(-50%);
-    font-family: var(--pixel);
-    font-size: 9px;
-    color: var(--ink-dim);
-    letter-spacing: 2px;
-    animation: bounce 2s ease-in-out infinite;
-  }
-  @keyframes bounce { 50% { transform: translate(-50%, 10px); } }
-
-  /* ============ 二维码区 ============ */
-  .qr-sec { padding-top: 40px; }
-
-  .qr-card {
-    margin-top: 52px;
-    display: grid;
-    grid-template-columns: 340px 1fr;
-    gap: 54px;
-    align-items: center;
-    padding: 46px;
-    background: linear-gradient(145deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .02));
-    border: 1px solid rgba(255, 212, 71, .28);
-    box-shadow: 0 0 0 1px rgba(0, 0, 0, .4), 0 30px 70px rgba(0, 0, 0, .55);
-    position: relative;
-    overflow: hidden;
-  }
-  .qr-card::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    padding: 2px;
-    background: conic-gradient(from 0deg, transparent 0 62%, rgba(255, 212, 71, .85) 80%, rgba(255, 59, 82, .6) 88%, transparent 96%);
-    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    mask-composite: exclude;
-    animation: rotate 6s linear infinite;
-    pointer-events: none;
-  }
-  @keyframes rotate { to { transform: rotate(360deg); } }
-  .qr-card > * { position: relative; z-index: 1; }
-
-  .qr-frame {
-    margin: 0;
-    background: #fff;
-    padding: 16px;
-    box-shadow: 0 0 46px rgba(255, 212, 71, .35);
-    cursor: zoom-in;
-    transition: transform .3s;
-  }
-  .qr-frame:hover { transform: scale(1.03) rotate(-1deg); }
-  .qr-frame img {
-    display: block;
-    width: 100%;
-    height: auto;
-    image-rendering: -webkit-optimize-contrast;
-  }
-  .qr-frame figcaption {
-    margin-top: 12px;
-    font-family: var(--pixel);
-    font-size: 9px;
-    color: #8a1a2c;
-    text-align: center;
-    letter-spacing: 1px;
-  }
-
-  .qr-info h3 {
-    font-family: var(--pixel);
-    font-size: clamp(14px, 2.2vw, 20px);
-    color: var(--gold);
-    line-height: 1.8;
-    margin-bottom: 20px;
-  }
-  .steps { list-style: none; counter-reset: s; }
-  .steps li {
-    counter-increment: s;
-    position: relative;
-    padding: 14px 0 14px 52px;
-    color: var(--ink-dim);
-    font-size: 15px;
-    line-height: 1.9;
-    border-bottom: 1px dashed rgba(255, 255, 255, .1);
-  }
-  .steps li:last-child { border-bottom: 0; }
-  .steps li::before {
-    content: counter(s);
-    position: absolute;
-    left: 0; top: 16px;
-    width: 32px; height: 32px;
-    display: grid; place-items: center;
-    font-family: var(--pixel);
-    font-size: 12px;
-    color: #2a0d10;
-    background: linear-gradient(180deg, var(--gold), var(--maple-orange));
-    box-shadow: 0 3px 0 #a85a10;
-  }
-  .steps li b { color: var(--ink); }
-
-  /* ============ 特色卡片 ============ */
-  .cards {
-    margin-top: 54px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 26px;
-  }
-  .card {
-    padding: 34px 30px;
-    background: linear-gradient(160deg, rgba(255, 255, 255, .07), rgba(255, 255, 255, .015));
-    border: 1px solid rgba(255, 255, 255, .12);
-    position: relative;
-    transition: transform .35s, border-color .35s, box-shadow .35s;
-    overflow: hidden;
-  }
-  .card::after {
-    content: "";
-    position: absolute;
-    left: 0; top: 0; bottom: 0;
-    width: 3px;
-    background: linear-gradient(180deg, var(--maple-red), var(--gold));
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform .35s;
-  }
-  .card:hover {
-    transform: translateY(-10px);
-    border-color: rgba(255, 212, 71, .5);
-    box-shadow: 0 24px 50px rgba(0, 0, 0, .5), 0 0 40px rgba(255, 212, 71, .12);
-  }
-  .card:hover::after { transform: scaleY(1); }
-
-  .card .icon { font-size: 38px; line-height: 1; margin-bottom: 18px; display: block; }
-  .card h4 {
-    font-family: var(--pixel);
-    font-size: 13px;
-    color: var(--gold);
-    margin-bottom: 14px;
-    line-height: 1.7;
-  }
-  .card p { color: var(--ink-dim); font-size: 14px; line-height: 2; }
-
-  /* ============ 数据条 ============ */
-  .stats {
-    margin-top: 60px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-  }
-  .stat {
-    text-align: center;
-    padding: 28px 16px;
-    border: 1px solid rgba(77, 214, 255, .22);
-    background: rgba(77, 214, 255, .05);
-  }
-  .stat b {
-    display: block;
-    font-family: var(--pixel);
-    font-size: clamp(20px, 3.6vw, 32px);
-    color: var(--cyan);
-    text-shadow: 0 0 22px rgba(77, 214, 255, .5);
-    margin-bottom: 12px;
-  }
-  .stat span { font-size: 13px; color: var(--ink-dim); letter-spacing: 2px; }
-
-  /* ============ 加入 CTA ============ */
-  .cta {
-    text-align: center;
-    padding: 110px 0 130px;
-    background:
-      radial-gradient(50% 60% at 50% 50%, rgba(255, 59, 82, .16), transparent 72%);
-  }
-  .cta h2 {
-    font-family: var(--pixel);
-    font-size: clamp(20px, 4.4vw, 40px);
-    line-height: 1.7;
-    color: #fff;
-    text-shadow: 3px 3px 0 #b3122b, 0 0 40px rgba(255, 59, 82, .5);
-    margin-bottom: 22px;
-  }
-  .cta p { color: var(--ink-dim); font-size: 16px; line-height: 2; }
-
-  footer {
-    border-top: 1px solid rgba(255, 255, 255, .1);
-    padding: 34px 0;
-    text-align: center;
-    color: rgba(169, 166, 204, .75);
-    font-size: 13px;
-    line-height: 2.1;
-  }
-  footer .small { font-family: var(--pixel); font-size: 8px; letter-spacing: 2px; opacity: .6; }
-
-  /* ============ 灯箱 ============ */
-  .lightbox {
-    position: fixed;
-    inset: 0;
-    z-index: 90;
-    display: none;
-    place-items: center;
-    background: rgba(4, 4, 14, .92);
-    backdrop-filter: blur(6px);
-    cursor: zoom-out;
-    padding: 24px;
-  }
-  .lightbox.show { display: grid; animation: fade .25s; }
-  @keyframes fade { from { opacity: 0; } }
-  .lightbox img {
-    width: min(420px, 82vw);
-    background: #fff;
-    padding: 18px;
-    box-shadow: 0 0 70px rgba(255, 212, 71, .45);
-  }
-  .lightbox p {
-    position: absolute;
-    bottom: 40px;
-    font-family: var(--pixel);
-    font-size: 9px;
-    color: var(--ink-dim);
-    letter-spacing: 2px;
-  }
-
-  /* ============ 响应式 ============ */
-  @media (max-width: 860px) {
-    .nav-links { display: none; }
-    section { padding: 66px 0; }
-    .qr-card { grid-template-columns: 1fr; gap: 34px; padding: 30px 22px; }
-    .qr-frame { max-width: 300px; margin: 0 auto; }
-    .hero-title { letter-spacing: 2px; }
-  }
-  @media (max-width: 420px) {
-    .brand span.name { font-size: 11px; }
-    .btn { padding: 14px 22px; font-size: 10px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    * { animation: none !important; transition: none !important; }
-    .reveal { opacity: 1; transform: none; }
-  }
-</style>
+<!-- 首屏脚本推迟到 DOM 解析后执行，不阻塞渲染 -->
+<script src="assets/js/main.js" defer></script>
 </head>
 <body>
 
@@ -521,17 +57,19 @@
 <header class="nav" id="nav">
   <div class="nav-inner">
     <div class="brand"><span class="leaf">🍁</span><span class="name">起床气家族</span></div>
-    <ul class="nav-links">
-      <li><a href="#join">加入我们</a></li>
-      <li><a href="#about">家族简介</a></li>
-      <li><a href="#life">家族日常</a></li>
-      <li><a href="#rules">家族公约</a></li>
-    </ul>
-    <button class="nav-cta" data-scroll="#join">扫码入群 →</button>
+    <nav aria-label="主导航">
+      <ul class="nav-links">
+        <li><a href="#join">加入我们</a></li>
+        <li><a href="#about">家族简介</a></li>
+        <li><a href="#life">家族日常</a></li>
+        <li><a href="#rules">家族公约</a></li>
+      </ul>
+    </nav>
+    <button class="nav-cta" type="button" data-scroll="#join">扫码入群 →</button>
   </div>
 </header>
 
-<div class="page">
+<main class="page">
 
   <!-- HERO -->
   <section class="hero">
@@ -544,7 +82,7 @@
         但<b>上线</b>是一定的 —— 一群不想起床、却天天在冒险岛熬夜的狠人。
       </p>
       <div class="hero-btns">
-        <button class="btn btn-primary" data-scroll="#join">🍁 扫码加入家族</button>
+        <button class="btn btn-primary" type="button" data-scroll="#join">🍁 扫码加入家族</button>
         <a class="btn btn-ghost" href="#about">了解一下</a>
       </div>
     </div>
@@ -561,9 +99,11 @@
       </div>
 
       <div class="qr-card reveal">
-        <figure class="qr-frame" id="qrFrame">
-          <img src="Qr.jpg" alt="起床气家族微信群二维码" />
-          <figcaption>微信扫码 · 长按识别</figcaption>
+        <figure class="qr-frame" id="qrFrame" role="button" tabindex="0"
+                aria-label="放大查看微信群二维码">
+          <img src="assets/img/qr.jpg" width="939" height="1449"
+               alt="起床气家族微信群二维码" loading="eager" decoding="async" />
+          <figcaption>微信扫码 · 长按识别 · 点击放大</figcaption>
         </figure>
         <div class="qr-info">
           <h3>三步入族</h3>
@@ -589,10 +129,10 @@
         </p>
       </div>
       <div class="stats reveal">
-        <div class="stat"><b data-count="0">24/7</b><span>群内在线时长</span></div>
-        <div class="stat"><b data-count="0">∞</b><span>摸鱼话题</span></div>
-        <div class="stat"><b data-count="0">100%</b><span>不早起承诺</span></div>
-        <div class="stat"><b data-count="0">0</b><span>入群门槛</span></div>
+        <div class="stat"><b>24/7</b><span>群内在线时长</span></div>
+        <div class="stat"><b>∞</b><span>摸鱼话题</span></div>
+        <div class="stat"><b>100%</b><span>不早起承诺</span></div>
+        <div class="stat"><b>0</b><span>入群门槛</span></div>
       </div>
     </div>
   </section>
@@ -679,7 +219,7 @@
       <h2>还在一个人刷图？</h2>
       <p>扫码进群，找一帮陪你熬夜的人。<br />冒险岛很大，一起走才好玩。</p>
       <div class="hero-btns">
-        <button class="btn btn-primary" data-scroll="#join">🍁 立即扫码加入</button>
+        <button class="btn btn-primary" type="button" data-scroll="#join">🍁 立即扫码加入</button>
       </div>
     </div>
   </section>
@@ -687,180 +227,16 @@
   <footer>
     <div class="wrap">
       <div>起床气家族 · 冒险岛枫之谷家族</div>
-      <div class="small">© <span id="year"></span> MORNING GRUMPY FAMILY · MADE WITH 🍁</div>
+      <div class="small">© <span id="year">2026</span> MORNING GRUMPY FAMILY · MADE WITH 🍁</div>
     </div>
   </footer>
 
-</div>
+</main>
 
-<div class="lightbox" id="lightbox">
-  <img src="Qr.jpg" alt="起床气家族微信群二维码" />
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="微信群二维码放大预览">
+  <img src="assets/img/qr.jpg" alt="起床气家族微信群二维码" />
   <p>点击任意处关闭</p>
 </div>
 
-<script>
-(function () {
-  'use strict';
-
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  /* ---- 平滑滚动 ---- */
-  document.querySelectorAll('a[href^="#"], [data-scroll]').forEach(function (el) {
-    el.addEventListener('click', function (e) {
-      var sel = el.getAttribute('data-scroll') || el.getAttribute('href');
-      var target = document.querySelector(sel);
-      if (!target) return;
-      e.preventDefault();
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-
-  /* ---- 导航滚动态 ---- */
-  var nav = document.getElementById('nav');
-  window.addEventListener('scroll', function () {
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  }, { passive: true });
-
-  /* ---- 滚动淡入 ---- */
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (entry, i) {
-      if (entry.isIntersecting) {
-        setTimeout(function () { entry.target.classList.add('in'); }, i * 90);
-        io.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.16 });
-  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-
-  /* ---- 二维码灯箱 ---- */
-  var box = document.getElementById('lightbox');
-  document.getElementById('qrFrame').addEventListener('click', function () {
-    box.classList.add('show');
-  });
-  box.addEventListener('click', function () { box.classList.remove('show'); });
-  document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape') box.classList.remove('show');
-  });
-
-  /* ---- 星空 + 枫叶 ---- */
-  var canvas = document.getElementById('sky');
-  var ctx = canvas.getContext('2d');
-  var stars = [], leaves = [], W = 0, H = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-  var mouse = { x: 0.5, y: 0.5 };
-
-  function resize() {
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = W * dpr; canvas.height = H * dpr;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    build();
-  }
-
-  function build() {
-    var starCount = Math.round((W * H) / 9000);
-    stars = [];
-    for (var i = 0; i < starCount; i++) {
-      stars.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        r: Math.random() * 1.5 + 0.3,
-        a: Math.random() * 0.7 + 0.25,
-        s: Math.random() * 0.02 + 0.004,
-        d: Math.random() * 0.6 + 0.2
-      });
-    }
-    var leafCount = window.innerWidth < 720 ? 12 : 22;
-    leaves = [];
-    for (var j = 0; j < leafCount; j++) {
-      leaves.push({
-        x: Math.random() * W,
-        y: Math.random() * H - H,
-        size: Math.random() * 11 + 9,
-        vy: Math.random() * 0.55 + 0.35,
-        vx: Math.random() * 0.5 - 0.25,
-        rot: Math.random() * Math.PI * 2,
-        vr: Math.random() * 0.02 - 0.01,
-        hue: Math.random() < 0.5 ? '#ff3b52' : (Math.random() < 0.5 ? '#ff9a2b' : '#ffd447'),
-        op: Math.random() * 0.5 + 0.35,
-        d: Math.random() * 0.8 + 0.3
-      });
-    }
-  }
-
-  function drawLeaf(l) {
-    ctx.save();
-    ctx.translate(l.x, l.y);
-    ctx.rotate(l.rot);
-    ctx.globalAlpha = l.op;
-    ctx.fillStyle = l.hue;
-    ctx.shadowColor = l.hue;
-    ctx.shadowBlur = 12;
-    // 像素枫叶：菱形 + 叶柄
-    var s = l.size;
-    ctx.beginPath();
-    ctx.moveTo(0, -s);
-    ctx.lineTo(s * 0.75, -s * 0.15);
-    ctx.lineTo(s * 0.45, s * 0.7);
-    ctx.lineTo(0, s);
-    ctx.lineTo(-s * 0.45, s * 0.7);
-    ctx.lineTo(-s * 0.75, -s * 0.15);
-    ctx.closePath();
-    ctx.fill();
-    ctx.shadowBlur = 0;
-    ctx.strokeStyle = 'rgba(0,0,0,.35)';
-    ctx.lineWidth = 1.5;
-    ctx.beginPath();
-    ctx.moveTo(0, -s * 0.2);
-    ctx.lineTo(0, s * 0.85);
-    ctx.stroke();
-    ctx.restore();
-  }
-
-  function tick() {
-    ctx.clearRect(0, 0, W, H);
-
-    var ox = (mouse.x - 0.5) * 26;
-    var oy = (mouse.y - 0.5) * 26;
-
-    // 星星（带视差）
-    for (var i = 0; i < stars.length; i++) {
-      var st = stars[i];
-      st.a += st.s;
-      var alpha = st.a > 1 ? 1 - (st.a - 1) : st.a;
-      if (st.a > 2) st.a = 0;
-      ctx.globalAlpha = Math.max(alpha, 0) * 0.9;
-      ctx.fillStyle = '#fff';
-      ctx.beginPath();
-      ctx.arc(st.x + ox * st.d, st.y + oy * st.d, st.r, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.globalAlpha = 1;
-
-    // 枫叶
-    for (var j = 0; j < leaves.length; j++) {
-      var l = leaves[j];
-      l.y += l.vy;
-      l.x += l.vx + Math.sin((l.y + l.rot * 100) / 60) * 0.6;
-      l.rot += l.vr;
-      if (l.y - l.size > H) {
-        l.y = -l.size * 2;
-        l.x = Math.random() * W;
-      }
-      if (l.x < -40) l.x = W + 30;
-      if (l.x > W + 40) l.x = -30;
-      drawLeaf(l);
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  window.addEventListener('resize', resize);
-  window.addEventListener('mousemove', function (e) {
-    mouse.x = e.clientX / window.innerWidth;
-    mouse.y = e.clientY / window.innerHeight;
-  });
-  resize();
-  tick();
-})();
-</script>
 </body>
 </html>
