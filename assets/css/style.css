@@ -8,7 +8,7 @@
 
 @font-face {
   font-family: 'FusionPixel';
-  src: url('../fonts/fusion-pixel-12px-subset.woff') format('woff');
+  src: url('../fonts/fusion-pixel-12px-subset.woff?v=20261011') format('woff');
   font-display: swap;
 }
 

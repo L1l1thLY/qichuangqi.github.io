@@ -61,6 +61,8 @@ git push origin main
 | 像素图 / 天空颜色 / 枫叶数量 | `assets/js/main.js` 里 `SPRITES`、`SKY_KEYS`、`buildSky()` |
 | 分享到聊天软件时的预览图 | 重新截取首屏生成 `assets/img/og-cover.png`（1200×630） |
 
+**改了 CSS / JS / 字体后记得改版本号**：`index.html`、`404.html` 里引用这三个文件时带着 `?v=日期`，`style.css` 里的字体地址也带着。GitHub Pages 会让浏览器缓存静态文件约 10 分钟，不改版本号的话，老访客可能拿到「新 HTML + 旧 CSS/JS」，页面直接错乱。全局替换一次即可，例如把 `?v=20261011` 改成当天日期。只换二维码图片则不需要。
+
 **替换二维码时注意大小写**：文件名必须全小写 `qr.jpg`。GitHub Pages 跑在 Linux 上，文件系统大小写敏感，写成 `QR.jpg` 本地能显示、线上却是裂图。
 
 ## 字体
