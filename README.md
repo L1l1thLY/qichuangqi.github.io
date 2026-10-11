@@ -12,19 +12,20 @@
 ├── 404.html                   # 自定义 404（GitHub Pages 会自动使用它）
 ├── CNAME                      # 自定义域名，勿动
 ├── .nojekyll                  # 跳过 Jekyll 构建，直接用原文件发布
-├── .gitignore
 └── assets
-    ├── css
-    │   └── style.css          # 全部样式（原 index.html 内联 <style> 抽出）
-    ├── js
-    │   └── main.js            # 全部交互（原 index.html 内联 <script> 抽出）
+    ├── css/style.css          # 全部样式
+    ├── js/main.js             # 全部交互 + 所有像素图（字符画）定义
+    ├── fonts
+    │   ├── fusion-pixel-12px-subset.woff   # 像素字体子集（自托管）
+    │   └── OFL.txt            # 字体许可证
     └── img
         ├── qr.jpg             # 微信群二维码 ← 换群时只需替换这个文件
-        ├── favicon.svg
-        ├── favicon-32.png
-        ├── apple-touch-icon.png
+        ├── favicon.svg / favicon-32.png / apple-touch-icon.png
         └── og-cover.png       # 社交分享预览图 1200×630
 ```
+
+页面里的蘑菇、蜗牛、冒险家、房子、枫叶、图标等像素图都没有图片文件，全部写在
+`main.js` 顶部的 `SPRITES` 里（一个字符一个像素，`.` 为透明），运行时画成图片。
 
 ## 本地预览
 
@@ -54,27 +55,48 @@ git push origin main
 | 想改什么 | 改哪里 |
 | --- | --- |
 | 微信群二维码（码过期 / 换群） | 替换 `assets/img/qr.jpg` |
-| 家族简介、日常、公约文案 | `index.html` 对应 `<section>` |
+| NPC 对话、任务、技能、公约文案 | `index.html` 对应 `<section>` |
+| 顶部喇叭滚动文字 | `index.html` 里 `.smega-track`（前三条与后三条保持一致，保证无缝滚动） |
 | 配色 | `assets/css/style.css` 顶部 `:root` 变量 |
-| 星星 / 枫叶的数量、速度 | `assets/js/main.js` 里 `build()` 的参数 |
-| 分享到聊天软件时的预览图 | 重新生成 `assets/img/og-cover.png`（尺寸需为 1200×630） |
+| 像素图 / 天空颜色 / 枫叶数量 | `assets/js/main.js` 里 `SPRITES`、`SKY_KEYS`、`buildSky()` |
+| 分享到聊天软件时的预览图 | 重新截取首屏生成 `assets/img/og-cover.png`（1200×630） |
 
-**替换二维码时注意大小写**：文件名必须全小写 `qr.jpg`。GitHub Pages 跑在 Linux 上，文件系统大小写敏感，写成 `QR.jpg` 或 `Qr.jpg` 本地（macOS / Windows）能显示、线上却是裂图。
+**替换二维码时注意大小写**：文件名必须全小写 `qr.jpg`。GitHub Pages 跑在 Linux 上，文件系统大小写敏感，写成 `QR.jpg` 本地能显示、线上却是裂图。
 
-## 已知取舍：网络字体
+## 字体
 
-页面用 Press Start 2P（像素标题）和 ZCOOL KuaiLe（中文），通过 Google Fonts 加载。**国内网络下 fonts.googleapis.com 通常不可达**，此时会有两种表现：
+全站使用 [缝合像素字体 Fusion Pixel Font](https://github.com/TakWolf/fusion-pixel-font)（12px 比例宽，简体中文版，SIL OFL 1.1）。
+为了国内访问稳定，**不走任何外部 CDN**，而是只截取页面用到的字做成约 34 KB 的子集放在 `assets/fonts/`。
 
-- 因为有 `display=swap`，文字会立刻用本地字体渲染，**不会白屏、不影响阅读**；
-- 代价是标题的像素风会退化成 `PingFang SC` / `微软雅黑`，视觉风格减弱。
+**改文案后如果新出现了没用过的汉字**，那几个字会退回系统字体显示。重新生成子集即可（需要 `pip install fonttools`）：
 
-`assets/css/style.css` 的 `:root` 里已配好逐级本地回退栈。若要彻底解决，可二选一：
+```bash
+# 先从上面的 GitHub 仓库 Releases 下载 12px-proportional 的 ttf 包并解压
+python3 - <<'PY'
+import string
+from fontTools import subset
+from fontTools.ttLib import TTFont
+text = set(string.printable)
+for f in ['index.html', '404.html', 'assets/js/main.js', 'assets/css/style.css']:
+    text |= set(open(f, encoding='utf-8').read())
+font = TTFont('fusion-pixel-12px-proportional-zh_hans.ttf')
+opts = subset.Options(); opts.flavor = 'woff'
+sub = subset.Subsetter(opts); sub.populate(text=''.join(text)); sub.subset(font)
+font.flavor = 'woff'; font.save('assets/fonts/fusion-pixel-12px-subset.woff')
+PY
+```
 
-1. **自建镜像** —— 把字体文件放到自己的 CDN，`index.html` 里替换两个 `<link>` 的 host 即可；
-2. **完全自托管** —— 字体下载到 `assets/fonts/`，删掉 Google Fonts 的 `<link>`，改用本地 `@font-face`。两个字体均为 SIL OFL 许可，允许自托管再分发。
+## 页面里的小彩蛋
+
+- 背景天空随滚动从白天 → 黄昏 → 深夜，太阳落下、月亮和星星升起；
+- 首屏的蘑菇、蜗牛可以点：出伤害数字、爆金币，右下角金币数会涨；
+- 底部状态栏的 EXP 会随“看过的页面”和打怪增长，满了会 LEVEL UP；
+- NPC 对话逐字打出，任务目标可以手动打勾，三项都勾上算任务完成；
+- 页面最底部的传送门：点它，或在它可见时按键盘 ↑，直接传送到二维码。
 
 ## 无障碍与小细节
 
-- 系统开启「减弱动态效果」时，CSS 动画与 canvas 星空都会停止滚动（只画一帧静态背景）；
-- 页面标签页切到后台时暂停 `requestAnimationFrame`，省电；
-- 若 JS 被禁用或加载失败，`.reveal` 元素不会停留在透明状态（`<html class="no-js">` 兜底，脚本启动后移除该 class）。
+- 系统开启「减弱动态效果」时，所有动画、天空滚动、小怪走动都会停止，只保留静态画面；
+- 标签页切到后台或场景滚出屏幕时暂停对应的 `requestAnimationFrame`，省电；
+- 若 JS 被禁用或加载失败，窗口不会停留在透明状态（`<html class="no-js">` 兜底），NPC 对话会直接显示全部文案；
+- 二维码图片上没有覆盖任何元素，微信内长按可以正常识别。

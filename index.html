@@ -2,240 +2,343 @@
 <html lang="zh-CN" class="no-js">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>起床气家族 · 冒险岛家族官网</title>
-<meta name="description" content="起床气家族 —— 冒险岛（枫之谷）家族，扫码加入微信群，一起肝图、开荒、摸鱼、整活。" />
-<meta name="keywords" content="起床气家族,冒险岛,枫之谷,MapleStory,家族,微信群,招募" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>起床气家族 · 冒险岛怀旧服家族招募</title>
+<meta name="description" content="起床气家族 —— 冒险岛怀旧服家族。扫码加入微信群，一起组队开荒、挂机摸鱼、熬夜整活。" />
+<meta name="keywords" content="起床气家族,冒险岛,冒险岛怀旧服,枫之谷,MapleStory,家族,微信群,招募" />
 <meta name="author" content="起床气家族" />
-<meta name="theme-color" content="#07071a" />
+<meta name="theme-color" content="#4aa8ff" />
 
-<!-- 自定义域名 canonical，避免 GitHub 原始域名被搜索引擎重复收录 -->
 <link rel="canonical" href="https://qichuangqi.icu/" />
 
-<!-- 站点图标 -->
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png" />
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/apple-touch-icon.png" />
 
-<!-- Open Graph / 社交分享预览 -->
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="起床气家族" />
 <meta property="og:locale" content="zh_CN" />
 <meta property="og:url" content="https://qichuangqi.icu/" />
-<meta property="og:title" content="起床气家族 · 冒险岛家族官网" />
-<meta property="og:description" content="一群不想起床、却天天在冒险岛熬夜的狠人。扫码进群，一起肝图、开荒、摸鱼、整活。" />
+<meta property="og:title" content="起床气家族 · 冒险岛怀旧服家族招募" />
+<meta property="og:description" content="早起是不可能早起的，但上线是一定的。扫码进群，一起组队开荒、挂机摸鱼、熬夜整活。" />
 <meta property="og:image" content="https://qichuangqi.icu/assets/img/og-cover.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
-<meta property="og:image:alt" content="起床气家族 · 冒险岛枫之谷家族" />
+<meta property="og:image:alt" content="起床气家族 · 冒险岛怀旧服家族" />
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="起床气家族 · 冒险岛家族官网" />
+<meta name="twitter:title" content="起床气家族 · 冒险岛怀旧服家族招募" />
 <meta name="twitter:description" content="扫码进群，找一帮陪你熬夜的人。冒险岛很大，一起走才好玩。" />
 <meta name="twitter:image" content="https://qichuangqi.icu/assets/img/og-cover.png" />
 
-<!-- ==========================================================================
-     网络字体：Press Start 2P（像素标题）+ ZCOOL KuaiLe（中文）
-     display=swap 保证字体加载失败/超时时立刻用本地字体渲染，不会白屏。
-     若需切换为国内可直连的源，把下面两个 host 同时替换即可，例如自建镜像
-     或把字体下载到 assets/fonts/ 后改用本地 @font-face（见 README）。
-     ========================================================================== -->
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet" />
-
+<!-- 像素字体为自托管子集（见 README「字体」），不依赖任何外部 CDN -->
+<link rel="preload" href="assets/fonts/fusion-pixel-12px-subset.woff" as="font" type="font/woff" crossorigin />
 <link rel="stylesheet" href="assets/css/style.css" />
-
-<!-- 首屏脚本推迟到 DOM 解析后执行，不阻塞渲染 -->
 <script src="assets/js/main.js" defer></script>
 </head>
 <body>
 
-<canvas id="sky"></canvas>
-<div class="bg-glow"></div>
-<div class="scanlines"></div>
+<!-- 全局像素天空：随滚动从白天 → 黄昏 → 深夜 -->
+<canvas id="sky" aria-hidden="true"></canvas>
 
-<header class="nav" id="nav">
-  <div class="nav-inner">
-    <div class="brand"><span class="leaf">🍁</span><span class="name">起床气家族</span></div>
+<!-- ============ 顶部：家族名 + 喇叭 ============ -->
+<header class="topbar" id="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#top" aria-label="回到顶部">
+      <img data-sprite="leaf" data-scale="2" alt="" />
+      <span>起床气家族</span>
+    </a>
     <nav aria-label="主导航">
       <ul class="nav-links">
-        <li><a href="#join">加入我们</a></li>
-        <li><a href="#about">家族简介</a></li>
-        <li><a href="#life">家族日常</a></li>
+        <li><a href="#npc">家族简介</a></li>
+        <li><a href="#join">入群任务</a></li>
+        <li><a href="#skills">家族日常</a></li>
         <li><a href="#rules">家族公约</a></li>
       </ul>
     </nav>
-    <button class="nav-cta" type="button" data-scroll="#join">扫码入群 →</button>
+  </div>
+  <div class="smega" aria-hidden="true">
+    <div class="smega-track">
+      <span><b>【喇叭】</b>起床气家族：招人啦！不卷战力不比氪金，扫码进群一起熬夜刷图～</span>
+      <span><b>【喇叭】</b>瞌睡虫：闹钟又刷新了，有没有人一起去把它砸了？？</span>
+      <span><b>【喇叭】</b>起床气家族：新人进群有人带，萌新也能凑齐一车！</span>
+      <span><b>【喇叭】</b>起床气家族：招人啦！不卷战力不比氪金，扫码进群一起熬夜刷图～</span>
+      <span><b>【喇叭】</b>瞌睡虫：闹钟又刷新了，有没有人一起去把它砸了？？</span>
+      <span><b>【喇叭】</b>起床气家族：新人进群有人带，萌新也能凑齐一车！</span>
+    </div>
   </div>
 </header>
 
-<main class="page">
+<main id="top">
 
-  <!-- HERO -->
+  <!-- ============ HERO：起床气村 ============ -->
   <section class="hero">
-    <div class="wrap">
-      <div class="hero-badge"><span class="dot"></span>MAPLESTORY · 招募中</div>
-      <h1 class="hero-title">起床气<span class="g">家族</span></h1>
-      <div class="hero-en">M O R N I N G &nbsp; G R U M P Y &nbsp; F A M I L Y</div>
-      <p class="hero-slogan">
+    <div class="hero-copy">
+      <div class="badge"><i class="blink"></i>冒险岛怀旧服 · 家族招募中</div>
+
+      <h1 class="logo">
+        <span class="logo-main" data-text="起床气">起床气</span>
+        <span class="logo-sub">家族</span>
+      </h1>
+      <p class="logo-en">MORNING&nbsp;GRUMPY&nbsp;GUILD</p>
+
+      <p class="bubble">
         早起是不可能早起的，<br />
-        但<b>上线</b>是一定的 —— 一群不想起床、却天天在冒险岛熬夜的狠人。
+        但<b>上线</b>是一定的。
       </p>
+
       <div class="hero-btns">
-        <button class="btn btn-primary" type="button" data-scroll="#join">🍁 扫码加入家族</button>
-        <a class="btn btn-ghost" href="#about">了解一下</a>
+        <a class="mbtn mbtn-gold" href="#join">▶ 接受任务 · 扫码入群</a>
+        <a class="mbtn" href="#npc">和 NPC 聊聊</a>
       </div>
     </div>
-    <div class="scroll-hint">▼ SCROLL</div>
+
+    <!-- 地面场景：房子、睡觉的冒险家、会被点的怪 -->
+    <div class="scene" id="scene">
+      <img class="house house-l" data-sprite="house" data-scale="5" alt="" />
+      <img class="house house-r" data-sprite="house" data-scale="4" alt="" />
+      <div class="sign" aria-hidden="true">起床气村 →</div>
+
+      <div class="sleeper" aria-hidden="true">
+        <img data-sprite="hero" data-scale="4" alt="" />
+        <span class="z z1">Z</span><span class="z z2">z</span><span class="z z3">z</span>
+      </div>
+
+      <div class="mobs" id="mobs" aria-hidden="true"></div>
+      <p class="scene-tip" aria-hidden="true">点点小怪试试 ↓</p>
+      <div class="ground"></div>
+    </div>
   </section>
 
-  <!-- 二维码 -->
-  <section class="qr-sec" id="join">
+  <!-- ============ NPC：家族简介 ============ -->
+  <section class="sec" id="npc">
+    <div class="wrap npc-grid">
+
+      <div class="mwin npc-win pop">
+        <div class="mwin-title"><span>NPC 对话</span><i class="x" aria-hidden="true">×</i></div>
+        <div class="npc-body">
+          <div class="npc-face">
+            <div class="npc-portrait"><img data-sprite="hero" data-scale="6" alt="家族管家 瞌睡虫" /></div>
+            <div class="npc-name">瞌睡虫</div>
+          </div>
+          <div class="npc-text" id="npcText" aria-live="polite">
+            <!-- 无 JS 时直接显示全部文案 -->
+            <p>哟，冒险家！这么晚还不睡？……那你一定是我们要找的人。</p>
+            <p>这里是「起床气家族」—— 一群作息离谱、感情很好的怀旧服玩家。不卷等级、不比装备，主打一个聊得来。</p>
+            <p>副本有人带，挂机有人陪，掉线有人笑。想加入的话，我这儿正好有个任务交给你。</p>
+          </div>
+        </div>
+        <div class="npc-actions">
+          <button class="mbtn mbtn-sm" type="button" id="npcEnd">结束对话</button>
+          <button class="mbtn mbtn-sm mbtn-gold" type="button" id="npcNext">下一步 ▶</button>
+        </div>
+      </div>
+
+      <div class="mwin stat-win pop">
+        <div class="mwin-title"><span>家族资料</span><i class="x" aria-hidden="true">×</i></div>
+        <dl class="stat-list">
+          <div><dt>名称</dt><dd>起床气家族</dd></div>
+          <div><dt>职业</dt><dd>熬夜冒险家</dd></div>
+          <div><dt>等级</dt><dd>∞</dd></div>
+          <div><dt>人气</dt><dd class="up">+999</dd></div>
+        </dl>
+        <div class="stat-ap">
+          <div class="ap"><span>STR</span><em>熬夜力</em><b data-count="999">999</b></div>
+          <div class="ap"><span>DEX</span><em>摸鱼力</em><b data-count="999">999</b></div>
+          <div class="ap"><span>INT</span><em>整活力</em><b data-count="999">999</b></div>
+          <div class="ap"><span>LUK</span><em>出货率</em><b>???</b></div>
+        </div>
+        <p class="stat-foot">入群门槛：<b>0</b>　早起承诺：<b>0%</b></p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ============ 任务：扫码入群 ============ -->
+  <section class="sec" id="join">
     <div class="wrap">
-      <div class="reveal">
-        <div class="eyebrow">▶ JOIN US</div>
-        <h2 class="sec-title">扫一扫，进家族群</h2>
-        <p class="sec-desc">微信扫码或长按识别二维码，进群改个昵称，从此冒险岛不孤单。</p>
-      </div>
+      <div class="mwin quest-win pop" id="questWin">
+        <div class="mwin-title">
+          <span><img data-sprite="bulb" data-scale="2" alt="" class="t-ico" />任务 · QUEST</span>
+          <i class="x" aria-hidden="true">×</i>
+        </div>
+        <div class="tabs" aria-hidden="true"><span class="on">可接任务</span><span>进行中</span><span>已完成</span></div>
 
-      <div class="qr-card reveal">
-        <figure class="qr-frame" id="qrFrame" role="button" tabindex="0"
-                aria-label="放大查看微信群二维码">
-          <img src="assets/img/qr.jpg" width="939" height="1449"
-               alt="起床气家族微信群二维码" loading="eager" decoding="async" />
-          <figcaption>微信扫码 · 长按识别 · 点击放大</figcaption>
-        </figure>
-        <div class="qr-info">
-          <h3>三步入族</h3>
-          <ol class="steps">
-            <li>打开 <b>微信 → 扫一扫</b>，对准左侧二维码</li>
-            <li>发送申请，备注 <b>游戏角色名</b></li>
-            <li>进群先看公告，改昵称：<b>角色名</b></li>
-          </ol>
+        <div class="quest-body">
+          <figure class="qr-slot" id="qrFrame" role="button" tabindex="0" aria-label="放大查看微信群二维码">
+            <img src="assets/img/qr.jpg" width="939" height="1449"
+                 alt="起床气家族微信群二维码" loading="eager" decoding="async" />
+            <figcaption>微信扫码 · 长按识别 · 点击放大</figcaption>
+          </figure>
+
+          <div class="quest-info">
+            <h2 class="quest-name">
+              <img data-sprite="bulb" data-scale="3" alt="" class="bob" />
+              【家族】起床气的召集令
+            </h2>
+            <p class="quest-meta">委托人：瞌睡虫　推荐等级：Lv.1 ~ ∞　类型：随时可接</p>
+
+            <h3 class="q-h">任务目标 <span id="qCount">0/3</span></h3>
+            <ul class="q-goals" id="qGoals">
+              <li><button type="button" aria-pressed="false"><i></i>打开 <b>微信 → 扫一扫</b>，或长按左侧二维码</button></li>
+              <li><button type="button" aria-pressed="false"><i></i>申请时备注 <b>游戏角色名</b></button></li>
+              <li><button type="button" aria-pressed="false"><i></i>进群先看公告，昵称改为 <b>角色名</b></button></li>
+            </ul>
+
+            <h3 class="q-h">任务奖励</h3>
+            <ul class="rewards">
+              <li><span class="slot"><img data-sprite="star" data-scale="3" alt="" /></span><b>经验值</b><em>+∞</em></li>
+              <li><span class="slot"><img data-sprite="hero" data-scale="2" alt="" /></span><b>熬夜伙伴</b><em>×N</em></li>
+              <li><span class="slot"><img data-sprite="potion" data-scale="3" alt="" /></span><b>副本有人带</b><em>×∞</em></li>
+              <li><span class="slot"><img data-sprite="meso" data-scale="4" alt="" /></span><b>快乐</b><em>MAX</em></li>
+            </ul>
+
+            <p class="q-tip">二维码 7 天自动更新一次，如果提示过期，过两天再来看看就好～</p>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 简介 -->
-  <section id="about">
+  <!-- ============ 技能：家族日常 ============ -->
+  <section class="sec" id="skills">
     <div class="wrap">
-      <div class="reveal">
-        <div class="eyebrow">▶ ABOUT</div>
-        <h2 class="sec-title">我们是谁</h2>
-        <p class="sec-desc">
-          「起床气家族」是冒险岛里一群作息离谱、感情很好的玩家聚在一起的小窝。
-          不卷等级、不比装备，主打一个聊得来；副本有人带，挂机有人陪，掉线有人笑。
-        </p>
-      </div>
-      <div class="stats reveal">
-        <div class="stat"><b>24/7</b><span>群内在线时长</span></div>
-        <div class="stat"><b>∞</b><span>摸鱼话题</span></div>
-        <div class="stat"><b>100%</b><span>不早起承诺</span></div>
-        <div class="stat"><b>0</b><span>入群门槛</span></div>
+      <div class="mwin skill-win pop">
+        <div class="mwin-title"><span>技能 · SKILL</span><i class="x" aria-hidden="true">×</i></div>
+        <div class="tabs" aria-hidden="true"><span class="on">家族技能</span><span>被动</span><span class="sp">SP <b>0</b></span></div>
+        <ul class="skills">
+          <li class="skill">
+            <span class="slot"><img data-sprite="sword" data-scale="4" alt="" /></span>
+            <div class="sk-main">
+              <h3>组队开荒 <i class="lv" data-max="20">Lv.20</i></h3>
+              <div class="sk-bar"><i></i></div>
+              <p>扎昆、闹钟、蝙蝠魔……群里喊一嗓子就能凑齐一车。打不过？那就一起躺。</p>
+            </div>
+            <button class="sk-plus" type="button" aria-label="加点">+</button>
+          </li>
+          <li class="skill">
+            <span class="slot"><img data-sprite="fish" data-scale="4" alt="" /></span>
+            <div class="sk-main">
+              <h3>挂机摸鱼 <i class="lv" data-max="30">Lv.30</i></h3>
+              <div class="sk-bar"><i></i></div>
+              <p>射手村门口一蹲，从装备聊到外卖，从 BOSS 聊到人生，氛围组全员在线。</p>
+            </div>
+            <button class="sk-plus" type="button" aria-label="加点">+</button>
+          </li>
+          <li class="skill">
+            <span class="slot"><img data-sprite="potion" data-scale="4" alt="" /></span>
+            <div class="sk-main">
+              <h3>互帮互助 <i class="lv" data-max="20">Lv.20</i></h3>
+              <div class="sk-bar"><i></i></div>
+              <p>新手问题有问必答，卷轴材料能送就送，谁卡任务了一起想办法。</p>
+            </div>
+            <button class="sk-plus" type="button" aria-label="加点">+</button>
+          </li>
+          <li class="skill">
+            <span class="slot"><img data-sprite="gift" data-scale="4" alt="" /></span>
+            <div class="sk-main">
+              <h3>整活活动 <i class="lv" data-max="10">Lv.10</i></h3>
+              <div class="sk-bar"><i></i></div>
+              <p>节日抽奖、截图大赛、家族合影……不定期整活，群里永远不缺乐子。</p>
+            </div>
+            <button class="sk-plus" type="button" aria-label="加点">+</button>
+          </li>
+          <li class="skill">
+            <span class="slot"><img data-sprite="moon" data-scale="4" alt="" /></span>
+            <div class="sk-main">
+              <h3>熬夜冠军 <i class="lv" data-max="30">Lv.30</i></h3>
+              <div class="sk-bar"><i></i></div>
+              <p>凌晨三点还在喊「再来一把」，第二天集体起床气 —— 家族名就是这么来的。</p>
+            </div>
+            <button class="sk-plus" type="button" aria-label="加点">+</button>
+          </li>
+          <li class="skill">
+            <span class="slot"><img data-sprite="leaf" data-scale="4" alt="" /></span>
+            <div class="sk-main">
+              <h3>枫叶情怀 <i class="lv" data-max="20">Lv.20</i></h3>
+              <div class="sk-bar"><i></i></div>
+              <p>从彩虹岛到天空之城，玩的是怀旧，留下来的是这群人和这些年的回忆。</p>
+            </div>
+            <button class="sk-plus" type="button" aria-label="加点">+</button>
+          </li>
+        </ul>
       </div>
     </div>
   </section>
 
-  <!-- 日常 -->
-  <section id="life">
+  <!-- ============ 告示牌：家族公约 ============ -->
+  <section class="sec" id="rules">
     <div class="wrap">
-      <div class="reveal">
-        <div class="eyebrow">▶ FAMILY LIFE</div>
-        <h2 class="sec-title">家族日常</h2>
-        <p class="sec-desc">在这里，你可以是肝帝，也可以是纯聊天选手，都没人催你。</p>
-      </div>
-      <div class="cards">
-        <div class="card reveal">
-          <span class="icon">⚔️</span>
-          <h4>副本开荒</h4>
-          <p>组队开荒不求人，群里喊一嗓子就能凑齐人。打不过？那就一起躺，反正开心最重要。</p>
-        </div>
-        <div class="card reveal">
-          <span class="icon">🎣</span>
-          <h4>挂机摸鱼</h4>
-          <p>一边挂机一边吹水，从装备聊到外卖，从 BOSS 聊到人生，氛围组全员在线。</p>
-        </div>
-        <div class="card reveal">
-          <span class="icon">🎁</span>
-          <h4>互帮互助</h4>
-          <p>新手提问有问必答，材料装备能送就送，谁卡任务了一起想办法。</p>
-        </div>
-        <div class="card reveal">
-          <span class="icon">🎉</span>
-          <h4>整活活动</h4>
-          <p>节日抽奖、截图大赛、家族合影……不定期整活，群里永远不缺乐子。</p>
-        </div>
-        <div class="card reveal">
-          <span class="icon">🛏️</span>
-          <h4>熬夜冠军</h4>
-          <p>凌晨三点还有人喊「再刷一把」，第二天集体起床气 —— 家族名就是这么来的。</p>
-        </div>
-        <div class="card reveal">
-          <span class="icon">🍁</span>
-          <h4>枫叶情怀</h4>
-          <p>从射手村到时间神殿，玩的是冒险岛，留下来的是这群人和这些年的回忆。</p>
+      <div class="board pop">
+        <div class="board-head">家族公约</div>
+        <p class="board-sub">只有四条，看完就是自己人</p>
+        <div class="notes">
+          <article class="note">
+            <span class="pin"></span>
+            <h3><em>壹</em>友好第一</h3>
+            <p>不吵架、不人身攻击、不引战。游戏嘛，和和气气才玩得久。</p>
+          </article>
+          <article class="note">
+            <span class="pin"></span>
+            <h3><em>贰</em>拒绝广告</h3>
+            <p>不发外挂、不发交易广告、不刷屏。违者直接送飞机票。</p>
+          </article>
+          <article class="note">
+            <span class="pin"></span>
+            <h3><em>叁</em>常冒个泡</h3>
+            <p>潜水可以，但别长期消失。偶尔冒个泡，让大家知道你还活着。</p>
+          </article>
+          <article class="note">
+            <span class="pin"></span>
+            <h3><em>肆</em>快乐至上</h3>
+            <p>不卷战力不比氪金，谁玩得开心谁就是大佬。</p>
+          </article>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- 公约 -->
-  <section id="rules">
+  <!-- ============ 传送门 CTA ============ -->
+  <section class="sec portal-sec">
     <div class="wrap">
-      <div class="reveal">
-        <div class="eyebrow">▶ RULES</div>
-        <h2 class="sec-title">家族公约</h2>
-        <p class="sec-desc">只有四条，简单粗暴，看完就是自己人。</p>
-      </div>
-      <div class="cards">
-        <div class="card reveal">
-          <span class="icon">🤝</span>
-          <h4>友好第一</h4>
-          <p>不吵架、不人身攻击、不引战。游戏嘛，和和气气才玩得久。</p>
-        </div>
-        <div class="card reveal">
-          <span class="icon">🚫</span>
-          <h4>拒绝广告</h4>
-          <p>不发外挂、不发交易广告、不刷屏。违者直接送飞机票。</p>
-        </div>
-        <div class="card reveal">
-          <span class="icon">💬</span>
-          <h4>活跃交流</h4>
-          <p>潜水可以，但别长期消失。偶尔冒个泡，让大家知道你还活着。</p>
-        </div>
-        <div class="card reveal">
-          <span class="icon">🍜</span>
-          <h4>快乐至上</h4>
-          <p>不卷战力不比氪金，谁玩得开心谁就是大佬。</p>
-        </div>
-      </div>
+      <h2 class="cta-title pop">还在一个人刷图？</h2>
+      <p class="cta-desc pop">扫码进群，找一帮陪你熬夜的人。<br />冒险岛很大，一起走才好玩。</p>
+      <button class="portal" id="portal" type="button" aria-label="进入传送门：前往入群二维码">
+        <canvas id="portalCanvas" width="32" height="48"></canvas>
+      </button>
+      <p class="portal-hint"><kbd>↑</kbd> 进入传送门 · 或者直接点它</p>
     </div>
   </section>
 
-  <!-- CTA -->
-  <section class="cta">
-    <div class="wrap reveal">
-      <h2>还在一个人刷图？</h2>
-      <p>扫码进群，找一帮陪你熬夜的人。<br />冒险岛很大，一起走才好玩。</p>
-      <div class="hero-btns">
-        <button class="btn btn-primary" type="button" data-scroll="#join">🍁 立即扫码加入</button>
-      </div>
-    </div>
-  </section>
-
-  <footer>
+  <footer class="foot">
     <div class="wrap">
-      <div>起床气家族 · 冒险岛枫之谷家族</div>
-      <div class="small">© <span id="year">2026</span> MORNING GRUMPY FAMILY · MADE WITH 🍁</div>
+      <p>起床气家族 · 冒险岛怀旧服家族</p>
+      <p class="small">© <span id="year">2026</span> MORNING GRUMPY GUILD</p>
+      <p class="small dim">本页为玩家自发的家族招募页，与游戏官方无关。</p>
     </div>
   </footer>
-
 </main>
+
+<!-- ============ 底部状态栏 HUD ============ -->
+<div class="hud" id="hud">
+  <div class="hud-lv"><small>LV.</small><b id="hudLv">1</b></div>
+  <div class="hud-name">
+    <b>熬夜冒险家</b>
+    <span>起床气家族</span>
+  </div>
+  <div class="hud-bars">
+    <div class="bar hp"><span>HP</span><i style="--v:100%"></i><em>3000/3000</em></div>
+    <div class="bar mp"><span>MP</span><i style="--v:100%"></i><em>1500/1500</em></div>
+    <div class="bar exp"><span>EXP</span><i id="expFill" style="--v:0%"></i><em id="expText">0.00%</em></div>
+  </div>
+  <div class="hud-meso" title="点小怪捡到的金币"><img data-sprite="meso" data-scale="2" alt="" /><b id="meso">0</b></div>
+  <a class="mbtn mbtn-gold mbtn-sm hud-cta" href="#join">扫码入群</a>
+</div>
+
+<div class="fx-layer" id="fx" aria-hidden="true"></div>
 
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="微信群二维码放大预览">
   <img src="assets/img/qr.jpg" alt="起床气家族微信群二维码" />
-  <p>点击任意处关闭</p>
+  <p>手机可长按识别 · 点击空白处关闭</p>
 </div>
 
 </body>
